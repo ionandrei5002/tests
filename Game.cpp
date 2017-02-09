@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "SplashScreen.h"
 #include "MainMenu.h"
+#include "PlayerPaddle.h"
 
 namespace pong
 {
@@ -23,9 +24,11 @@ void Game::Start(void)
 
 	pong::SplashScreen splash(_mainWindow);
 	pong::MainMenu menu(_mainWindow);
+	pong::PlayerPaddle player(_mainWindow);
 
 	eventBus.submitEntity(std::make_shared < pong::SplashScreen > (splash));
 	eventBus.submitEntity(std::make_shared < pong::MainMenu > (menu));
+	eventBus.submitEntity(std::make_shared < pong::PlayerPaddle > (player));
 
 	while (!IsExiting())
 	{
@@ -53,11 +56,10 @@ void Game::GameLoop()
 	{
 		while (_mainWindow.pollEvent(currentEvent))
 		{
-			Event evn(0, &currentEvent);
-			std::string msg = evn.toBinary(evn);
+			Event<sf::Event> evn(0, &currentEvent);
 
 			eventBus.submitMessage(
-					std::make_shared < GenericMessage > (1, msg));
+					std::make_shared < GenericMessage > (1, (void*) &evn));
 
 			if (currentEvent.type == sf::Event::Closed)
 			{

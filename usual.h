@@ -28,7 +28,7 @@
 class GenericMessage: public Message
 {
 public:
-	GenericMessage(long messageId, std::string& message) :
+	GenericMessage(long messageId, void* message) :
 			Message(messageId, message)
 	{
 	}
@@ -41,24 +41,25 @@ public:
 		return this->MessageId;
 	}
 
-	std::string& getMessage(void) override
+	void* getMessage(void) override
 	{
 		return this->mMessage;
 	}
 };
 
-class Event: public Serialize<Event>
+template<typename T>
+class Event
 {
 private:
 	int msgId = 0;
-	sf::Event* currentEvent;
+	T* currentEvent;
 public:
 	Event() :
 			msgId(0), currentEvent(nullptr)
 	{
 	}
 
-	Event(int id, sf::Event* event) :
+	Event(int id, T* event) :
 			msgId(id), currentEvent(event)
 	{
 	}
@@ -67,37 +68,9 @@ public:
 	{
 	}
 
-	sf::Event getEvent()
+	T getEvent()
 	{
 		return *currentEvent;
-	}
-
-	std::string toBinary(Event& object) override
-	{
-		std::string buff;
-		buff.resize(12);
-
-		memcpy((char*) buff.data(), (char*) &msgId, 4);
-		memcpy((char*) &buff.data()[4], (char*) &currentEvent, 8);
-		return buff;
-	}
-
-	Event fromBinary(std::string& object) override
-	{
-		char* buff = (char*) object.data();
-
-		int n = *(int*) buff;
-		long t = *(long*) &buff[4];
-		return Event(n, (sf::Event*) t);
-	}
-
-	std::string toString() override
-	{
-		std::string out;
-
-		out = out + std::to_string(this->msgId) + " : "
-				+ std::to_string((long) &this->currentEvent);
-		return out;
 	}
 };
 

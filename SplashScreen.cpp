@@ -28,8 +28,7 @@ void SplashScreen::update(std::shared_ptr<Message> message)
 {
 	if (Game::_gameState == Game::ShowingSplash)
 	{
-		std::string msg = message->getMessage();
-		Event evn = Event().fromBinary(msg);
+		Event<sf::Event> evn = *(Event<sf::Event>*) message->getMessage();
 
 		sf::Event event = evn.getEvent();
 

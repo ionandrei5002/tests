@@ -6,19 +6,25 @@
 CPP_SRCS += \
 ../Game.cpp \
 ../MainMenu.cpp \
+../PlayerPaddler.cpp \
 ../SplashScreen.cpp \
+../VisibleGameObject.cpp \
 ../main.cpp 
 
 OBJS += \
 ./Game.o \
 ./MainMenu.o \
+./PlayerPaddler.o \
 ./SplashScreen.o \
+./VisibleGameObject.o \
 ./main.o 
 
 CPP_DEPS += \
 ./Game.d \
 ./MainMenu.d \
+./PlayerPaddler.d \
 ./SplashScreen.d \
+./VisibleGameObject.d \
 ./main.d 
 
 

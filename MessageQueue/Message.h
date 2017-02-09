@@ -4,13 +4,19 @@
 class Message
 {
 protected:
-    long MessageId = 0;
-    std::string& mMessage;
+	long MessageId = 0;
+	void* mMessage;
 public:
-    Message(long messageId, std::string& message) : MessageId(messageId), mMessage(message){}
-    virtual ~Message() {};
-    virtual long messageId() = 0;
-    virtual std::string& getMessage(void) = 0;
+	Message(long messageId, void* message) :
+			MessageId(messageId), mMessage(message)
+	{
+	}
+	virtual ~Message()
+	{
+	}
+	;
+	virtual long messageId() = 0;
+	virtual void* getMessage(void) = 0;
 };
 
 #endif // MESSAGE_H_INCLUDED

@@ -2,7 +2,7 @@ Game.o: ../Game.cpp ../usual.h ../MessageQueue/Bus.h \
  ../MessageQueue/Entity.h ../MessageQueue/Message.h \
  ../MessageQueue/Queue.h ../MessageQueue/Entity.h \
  ../MessageQueue/Message.h ../MessageQueue/Serialize.h ../Game.h \
- ../SplashScreen.h ../MainMenu.h
+ ../SplashScreen.h ../MainMenu.h ../PlayerPaddle.h ../VisibleGameObject.h
 
 ../usual.h:
 
@@ -25,3 +25,7 @@ Game.o: ../Game.cpp ../usual.h ../MessageQueue/Bus.h \
 ../SplashScreen.h:
 
 ../MainMenu.h:
+
+../PlayerPaddle.h:
+
+../VisibleGameObject.h:

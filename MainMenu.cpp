@@ -27,20 +27,16 @@ void MainMenu::update(std::shared_ptr<Message> message)
 {
 	if (Game::_gameState == Game::ShowingMenu)
 	{
-		std::string msg = message->getMessage();
-		Event evn = Event().fromBinary(msg);
+		Event<sf::Event> evn = *(Event<sf::Event>*) message->getMessage();
 
 		sf::Event event = evn.getEvent();
 
-		if (event.type == sf::Event::MouseButtonReleased)
-		{
-			this->Show();
-		}
+		this->Show();
 
-		if (Game::_gameState == Game::ShowingMenu)
-		{
-			this->menuResponse(event);
-		}
+//		if (Game::_gameState == Game::ShowingMenu)
+//		{
+		this->menuResponse(event);
+//		}
 	}
 }
 
@@ -77,10 +73,13 @@ void MainMenu::handleClick(int x, int y)
 			{
 				Game::_gameState = Game::Exiting;
 			}
+
+			if ((*it).action == MainMenu::Play)
+			{
+				Game::_gameState = Game::Playing;
+			}
 		}
 	}
-
-	std::cout << Game::_gameState << std::endl;
 }
 
 } /* namespace pong */
