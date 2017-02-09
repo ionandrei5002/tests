@@ -10,12 +10,11 @@
 #include "SplashScreen.h"
 #include "MainMenu.h"
 #include "PlayerPaddle.h"
+#include "GameBall.h"
 
-namespace pong
-{
+namespace pong {
 
-void Game::Start(void)
-{
+void Game::Start(void) {
 	if (_gameState != Uninitialized)
 		return;
 
@@ -25,53 +24,61 @@ void Game::Start(void)
 	pong::SplashScreen splash(_mainWindow);
 	pong::MainMenu menu(_mainWindow);
 	pong::PlayerPaddle player(_mainWindow);
+	pong::GameBall ball(_mainWindow);
 
-	eventBus.submitEntity(std::make_shared < pong::SplashScreen > (splash));
-	eventBus.submitEntity(std::make_shared < pong::MainMenu > (menu));
-	eventBus.submitEntity(std::make_shared < pong::PlayerPaddle > (player));
+	eventBus.submitEntity(std::make_shared<pong::SplashScreen>(splash));
+	eventBus.submitEntity(std::make_shared<pong::MainMenu>(menu));
+	eventBus.submitEntity(std::make_shared<pong::PlayerPaddle>(player));
+	eventBus.submitEntity(std::make_shared<pong::GameBall>(ball));
 
-	while (!IsExiting())
-	{
+	while (!IsExiting()) {
 		Game::GameLoop();
 	}
 
 	_mainWindow.close();
 }
 
-bool Game::IsExiting()
-{
+bool Game::IsExiting() {
 	if (_gameState == Game::Exiting)
 		return true;
 	else
 		return false;
 }
 
-void Game::GameLoop()
-{
+void Game::GameLoop() {
 	sf::Event currentEvent;
+
+	sf::Clock clock;
 
 	Game::_gameState = Game::ShowingSplash;
 
-	while (true)
-	{
-		while (_mainWindow.pollEvent(currentEvent))
-		{
+	while (true) {
+		while (_mainWindow.pollEvent(currentEvent)) {
 			Event<sf::Event> evn(0, &currentEvent);
 
 			eventBus.submitMessage(
-					std::make_shared < GenericMessage > (1, (void*) &evn));
+					std::make_shared<GenericMessage>(1, (void*) &evn));
 
-			if (currentEvent.type == sf::Event::Closed)
-			{
+			eventBus.trigger();
+
+			if (currentEvent.type == sf::Event::Closed) {
 				Game::_gameState = Game::Exiting;
 				break;
 			}
 		}
 
+		float Time = clock.getElapsedTime().asSeconds();
+		clock.restart();
+
+		Event<sf::Event> evn(0, &currentEvent);
+		eventBus.submitMessage(
+				std::make_shared<GenericMessage>((int) (Time * 100000), (void*) &evn));
+
 		eventBus.trigger();
 
-		if (Game::_gameState == Game::Exiting)
-		{
+		sf::sleep(sf::microseconds(10000 - (1.f / Time)));
+
+		if (Game::_gameState == Game::Exiting) {
 			break;
 		}
 	}

@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Game.cpp \
+../GameBall.cpp \
 ../MainMenu.cpp \
 ../PlayerPaddler.cpp \
 ../SplashScreen.cpp \
@@ -13,6 +14,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./Game.o \
+./GameBall.o \
 ./MainMenu.o \
 ./PlayerPaddler.o \
 ./SplashScreen.o \
@@ -21,6 +23,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./Game.d \
+./GameBall.d \
 ./MainMenu.d \
 ./PlayerPaddler.d \
 ./SplashScreen.d \
